@@ -1,0 +1,133 @@
+\RequirePackage{array}     % 表格支持
+\RequirePackage{environ}   % 环境
+\RequirePackage{fontspec}  % 字体设置
+\RequirePackage{kvoptions} % 键值对参数
+\RequirePackage{setspace}  % 行距
+\RequirePackage{tabularx}  % 表格
+
+\ProvidesPackage{style/swjtu}[SWJTU Thesis Style]
+%%% ======================= 字体 ======================= %%%
+%%% --------------------- 默认字体 --------------------- %%%
+\setmainfont[
+    Path=fonts/,
+    UprightFont=TIMES,
+    BoldFont=TIMESBD,
+    ItalicFont=TIMESI,
+    BoldItalicFont=TIMESBI
+]{Times New Roman}
+\setCJKmainfont[
+    Path=fonts/,
+    AutoFakeBold,
+    AutoFakeSlant
+]{simsun.ttc}
+\setCJKmonofont[
+    Path=fonts/,
+    AutoFakeBold,
+    AutoFakeSlant
+]{simsun.ttc}
+
+%%% --------------------- 中文字体 --------------------- %%%
+\setCJKfamilyfont{songti}[
+    Path=fonts/,
+    AutoFakeBold,
+    AutoFakeSlant
+]{simsun.ttc}
+\newcommand{\songti}{\CJKfamily{songti}}
+
+\setCJKfamilyfont{heiti}[
+    Path=fonts/,
+    AutoFakeBold,
+    AutoFakeSlant
+]{simhei.ttf}
+\newcommand{\heiti}{\CJKfamily{heiti}}
+
+%%% --------------------- 英文字体 --------------------- %%%
+\newfontfamily{\ensongti}[
+    Path=fonts/,
+    AutoFakeBold,
+    AutoFakeSlant
+]{simsun.ttc}
+\newfontfamily{\enheiti}[
+    Path=fonts/,
+    AutoFakeBold,
+    AutoFakeSlant
+]{simhei.ttf}
+
+%%% ------------------- 统一字体环境 ------------------- %%%
+\NewEnviron{allsongti}{
+    {\songti\ensongti\BODY}
+}
+\NewEnviron{allheiti}{
+    {\heiti\enheiti\BODY}
+}
+
+%%% ===================== 参数定义 ===================== %%%
+%%% ----------------------- 扉页 ----------------------- %%%
+\SetupKeyvalOptions{
+    family=swjtu/titlePage,
+    prefix=swjtu@titlePage@
+}
+\DeclareStringOption{ctitle}
+\DeclareStringOption{etitle}
+\DeclareStringOption{grade}
+\DeclareStringOption{id}
+\DeclareStringOption{name}
+\DeclareStringOption{major}
+\DeclareStringOption{advisor}
+\DeclareStringOption{year}
+\DeclareStringOption{month}
+
+%%% ======================= 扉页 ======================= %%%
+\makeatletter
+\newcommand{\swjtuTitlePage}[1][]{%
+    \setkeys{swjtu/titlePage}{#1}
+
+    \begin{titlepage}
+        \onehalfspacing \zihao{-4}
+
+        \begin{center}
+            % 标题
+            \begin{allheiti} \doublespacing \zihao{-2}
+                % 空行 * 2
+                ~\\ \vspace{\baselineskip}
+
+                西\hspace{0.5em}南\hspace{0.5em}交\hspace{0.5em}通\hspace{0.5em}大\hspace{0.5em}学\par
+                本科毕业设计（外文翻译）\par
+            \end{allheiti}
+
+            % 空行 * 2
+            \vspace{2\baselineskip}
+
+            % 毕业设计题目
+            \begin{allheiti} \zihao{2}
+                \swjtu@titlePage@ctitle\par
+            \end{allheiti}
+
+            % 空行 * 10
+            \vspace{10\baselineskip}
+
+            % 个人信息
+            \begin{allheiti}
+                \begin{tabularx}{0.4\textwidth}{lX}
+                    年\hspace{2em}级： & \underline{\makebox[\linewidth][c]{\swjtu@titlePage@grade}}   \\[0.5em]
+                    学\hspace{2em}号： & \underline{\makebox[\linewidth][c]{\swjtu@titlePage@id}}      \\[0.5em]
+                    姓\hspace{2em}名： & \underline{\makebox[\linewidth][c]{\swjtu@titlePage@name}}    \\[0.5em]
+                    专\hspace{2em}业： & \underline{\makebox[\linewidth][c]{\swjtu@titlePage@major}}   \\[0.5em]
+                    指导教师：           & \underline{\makebox[\linewidth][c]{\swjtu@titlePage@advisor}} \\[0.5em]
+                \end{tabularx}
+            \end{allheiti}
+
+            % 空行 * 2
+            \vspace{2\baselineskip}
+
+            % 日期
+            \begin{allheiti}
+                \swjtu@titlePage@year\:年\:\swjtu@titlePage@month\:月
+            \end{allheiti}
+        \end{center}
+    \end{titlepage}
+
+    \thispagestyle{empty}
+    \mbox{}
+}
+\makeatother
