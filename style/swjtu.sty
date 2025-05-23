@@ -1,9 +1,13 @@
 \RequirePackage{array}     % 表格支持
 \RequirePackage{environ}   % 环境
+\RequirePackage{fancyhdr}  % 页眉页脚
 \RequirePackage{fontspec}  % 字体设置
+\RequirePackage{geometry}  % 页面设置
 \RequirePackage{kvoptions} % 键值对参数
+\RequirePackage{pdfpages}  % PDF支持
 \RequirePackage{setspace}  % 行距
 \RequirePackage{tabularx}  % 表格
+\RequirePackage{titlesec}  % 标题格式 
 
 \ProvidesPackage{style/swjtu}[SWJTU Thesis Style]
 %%% ======================= 字体 ======================= %%%
@@ -60,6 +64,68 @@
 \NewEnviron{allheiti}{
     {\heiti\enheiti\BODY}
 }
+
+%%% ======================= 排版 ======================= %%%
+%%% ----------------------- 页面 ----------------------- %%%
+\geometry{
+    paper=a4paper,
+    left=2.7cm, right=2.7cm,
+    top=2.6cm, bottom=2.6cm
+}
+
+%%% ------------------- 放宽断行策略 ------------------- %%%
+\pretocmd{\section}{\sloppy}{}{}
+\pretocmd{\subsection}{\sloppy}{}{}
+\pretocmd{\subsubsection}{\sloppy}{}{}
+\pretocmd{\paragraph}{\sloppy}{}{}
+\pretocmd{\subparagraph}{\sloppy}{}{}
+\sloppy
+
+%%% ===================== 页眉页脚 ===================== %%%
+\pagestyle{fancy}
+
+%%% ----------------------- 页眉 ----------------------- %%%
+\fancyhead[L]{}
+\fancyhead[C]{
+    \begin{allheiti}
+        西南交通大学本科毕业设计（外文翻译）
+    \end{allheiti}
+}
+\fancyhead[R]{}
+\renewcommand{\headrulewidth}{0.8mm}
+\setlength{\headheight}{14.45398pt}
+
+%%% ----------------------- 页脚 ----------------------- %%%
+\fancyfoot[C]{
+    \heiti
+    第\thepage 页
+}
+\renewcommand{\footrulewidth}{0pt}
+
+%%% ===================== 标题间距 ===================== %%%
+% 节标题
+\titleformat{\section}
+{\zihao{-3}\heiti}
+{\thesection}{1em}{}
+\titlespacing*{\section}
+{0pt}{12pt plus 2pt minus 2pt}{6pt}
+
+% 子节标题
+\titleformat{\subsection}
+{\zihao{4}\heiti}
+{\thesubsection}{1em}{}
+\titlespacing*{\subsection}
+{0pt}{6pt plus 2pt minus 2pt}{3pt}
+
+% 子子节标题
+\titleformat{\subsubsection}
+{\zihao{-4}\heiti}
+{\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}
+{0pt}{0pt}{0pt}
+
+%%% =================== 其他页面设置 =================== %%%
+\raggedbottom % 避免强制拉伸
 
 %%% ===================== 参数定义 ===================== %%%
 %%% ----------------------- 扉页 ----------------------- %%%
@@ -131,3 +197,12 @@
     \mbox{}
 }
 \makeatother
+
+%%% ======================= 章节 ======================= %%%
+\newcommand{\swjtuChineseTitle}[1]{
+    \cleardoublepage
+    \pagenumbering{arabic}
+    \begin{center}
+        {\heiti\zihao{-2}#1}
+    \end{center}
+}

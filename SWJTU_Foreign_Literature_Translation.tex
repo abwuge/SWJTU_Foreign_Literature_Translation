@@ -4,15 +4,13 @@
   fontset=none,
   linespread=1.5,
   UTF8,
-  openany,
   twoside,
   zihao=-4
-]{ctexbook}
+]{ctexart}
 \usepackage{style/swjtu}
 
 \begin{document}
-%%% ======================= 前置 ======================= %%%
-%%% ----------------------- 扉页 ----------------------- %%%
+%%% ======================= 扉页 ======================= %%%
 \swjtuTitlePage[
   ctitle={毕业设计题目},
   grade={2021级},
@@ -23,5 +21,11 @@
   year={二〇二五},
   month={五}
 ]
+
+%%% ======================= 中文 ======================= %%%
+\include{literature/Chinese}
+
+%%% ======================= 外文 ======================= %%%
+\includepdf{literature/Foreign_Language.pdf}
 
 \end{document}
