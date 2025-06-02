@@ -1,39 +1,64 @@
+%%% ======================== 包 ======================== %%%
+%%% ------- 普通（无顺序要求或可按字母顺序排序） ------- %%%
 \RequirePackage{amsmath}     % 数学公式
 \RequirePackage{array}       % 表格
 \RequirePackage{booktabs}    % 表格
 \RequirePackage{calc}        % 计算
+\RequirePackage{emptypage}   % 让空白页真正空白
 \RequirePackage{enumitem}    % 列表
 \RequirePackage{environ}     % 环境
 \RequirePackage{fancyhdr}    % 页眉页脚
 \RequirePackage{fontspec}    % 字体设置
-\RequirePackage{geometry}    % 页面设置
+\RequirePackage{geometry}    % 页面布局
 \RequirePackage{indentfirst} % 章节首段缩进
 \RequirePackage{kvoptions}   % 键值对参数
+\RequirePackage{lmodern}     % 字体
+\RequirePackage{microtype}   % 自动排版
 \RequirePackage{pdfpages}    % PDF支持
 \RequirePackage{pgffor}      % 循环命令
+\RequirePackage{physics}     % 物理符号
 \RequirePackage{placeins}    % 浮动体
-\RequirePackage{setspace}    % 行距
+\RequirePackage{setspace}    % 行间距
 \RequirePackage{tabularx}    % 表格
-\RequirePackage{titlesec}    % 标题格式
+\RequirePackage{titlesec}    % 章节标题
 
+%%% ------------------- 须在上述之后 ------------------- %%%
+\RequirePackage{hyperref}    % 超链接
+
+%%% --------------------- 带参数包 --------------------- %%%
 % 参考文献处理
 \RequirePackage[
     style=gb7714-2015,
     url=false,
 ]{biblatex}
 
-% 设置浮动体标题
+% 浮动体标题
 \RequirePackage[
-    labelsep=space
+    labelsep=space,
+    font=small,
 ]{caption}
 
-% 超链接
-\RequirePackage[
-    colorlinks=false,
-    hidelinks,
-]{hyperref}
-
+%%% ---------------------- 提供包 ---------------------- %%%
 \ProvidesPackage{style/swjtu}[SWJTU Thesis Style]
+
+%%% ======================= 排版 ======================= %%%
+%%% ----------------------- 页面 ----------------------- %%%
+\geometry{
+    paper=a4paper,
+    left=2.7cm, right=2.7cm,
+    top=2.6cm, bottom=2.6cm
+}
+
+\raggedbottom % 避免强制拉伸
+
+%%% ------------------- 放宽断行策略 ------------------- %%%
+\pretocmd{\section}{\sloppy}{}{}
+\pretocmd{\subsection}{\sloppy}{}{}
+\pretocmd{\subsubsection}{\sloppy}{}{}
+\pretocmd{\paragraph}{\sloppy}{}{}
+\pretocmd{\subparagraph}{\sloppy}{}{}
+\sloppy
+
 %%% ======================= 字体 ======================= %%%
 %%% --------------------- 默认字体 --------------------- %%%
 \setmainfont[
@@ -89,22 +114,6 @@
     {\heiti\enheiti\BODY}
 }
 
-%%% ======================= 排版 ======================= %%%
-%%% ----------------------- 页面 ----------------------- %%%
-\geometry{
-    paper=a4paper,
-    left=2.7cm, right=2.7cm,
-    top=2.6cm, bottom=2.6cm
-}
-
-%%% ------------------- 放宽断行策略 ------------------- %%%
-\pretocmd{\section}{\sloppy}{}{}
-\pretocmd{\subsection}{\sloppy}{}{}
-\pretocmd{\subsubsection}{\sloppy}{}{}
-\pretocmd{\paragraph}{\sloppy}{}{}
-\pretocmd{\subparagraph}{\sloppy}{}{}
-\sloppy
-
 %%% ===================== 页眉页脚 ===================== %%%
 \pagestyle{fancy}
 
@@ -126,30 +135,49 @@
 }
 \renewcommand{\footrulewidth}{0pt}
 
+%%% ===================== 参考文献 ===================== %%%
+%%% ------------------------ 源 ------------------------ %%%
+\addbibresource{bibliography/references.bib}
+
+%%% ------------------- 补充格式修正 ------------------- %%%
+% 姓名格式
+\DeclareNameFormat{family-given-init}{%
+  \MakeCapital{\namepartfamily} % 姓氏首字母大写
+  \ifblank{\namepartgiveni}{}{%
+    \addspace\namepartgiveni} % 姓名有缩写，添加空格和缩写（带点）
+  \ifnumequal{\value{listcount}}{\value{liststop}}{}{%
+    \addcomma\space} % 非最后者，添加逗号和空格
+  \usebibmacro{name:andothers} % 处理“et al.”等情况
+}
+
+% 应用姓名格式到作者和编辑
+\DeclareNameAlias{author}{family-given-init}
+\DeclareNameAlias{editor}{family-given-init}
+
+% 文献名
+\DeclareFieldFormat*{titlecase}{\MakeSentenceCase{#1}}
+
 %%% ===================== 标题间距 ===================== %%%
 % 节标题
 \titleformat{\section}
 {\zihao{-3}\heiti}
-{\thesection}{1em}{}
+{\thesection}{0.5em}{}
 \titlespacing*{\section}
-{0pt}{12pt plus 2pt minus 2pt}{6pt}
+{0pt}{13pt}{13pt}
 
 % 子节标题
 \titleformat{\subsection}
 {\zihao{4}\heiti}
-{\thesubsection}{1em}{}
+{\thesubsection}{0.5em}{}
 \titlespacing*{\subsection}
-{0pt}{6pt plus 2pt minus 2pt}{3pt}
+{0pt}{10pt}{10pt}
 
 % 子子节标题
 \titleformat{\subsubsection}
 {\zihao{-4}\heiti}
-{\thesubsubsection}{1em}{}
+{\thesubsubsection}{0.5em}{}
 \titlespacing*{\subsubsection}
 {0pt}{0pt}{0pt}
-
-%%% =================== 其他页面设置 =================== %%%
-\raggedbottom % 避免强制拉伸
 
 %%% =================== 测量最大长度 =================== %%%
 \makeatletter
@@ -175,15 +203,13 @@
 }
 
 \makeatother
-
 %%% ===================== 参数定义 ===================== %%%
 %%% ----------------------- 扉页 ----------------------- %%%
 \SetupKeyvalOptions{
     family=swjtu/titlePage,
     prefix=swjtu@titlePage@
 }
-\DeclareStringOption{ctitle}
-\DeclareStringOption{etitle}
+\DeclareStringOption{title}
 \DeclareStringOption{grade}
 \DeclareStringOption{id}
 \DeclareStringOption{name}
@@ -215,7 +241,7 @@
 
             % 毕业设计题目
             \begin{allheiti} \zihao{2}
-                \swjtu@titlePage@ctitle\par
+                \swjtu@titlePage@title\par
             \end{allheiti}
 
             % 空行 * 10
@@ -248,9 +274,6 @@
             \end{allheiti}
         \end{center}
     \end{titlepage}
-
-    \thispagestyle{empty}
-    \mbox{}
 }
 \makeatother
 
